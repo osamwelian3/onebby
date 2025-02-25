@@ -1,5 +1,9 @@
 name: Build Android
 
+on:
+  push:
+    branches: ['*']
+
 jobs:
   # this config is executed when running a build with `android-build-without-credentials` profile
   # check the profile's configuration in eas.json to see what are the settings needed to execute it properly

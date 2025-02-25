@@ -1,0 +1,23 @@
+build:
+  name: Android build without credentials as executed by eas/build command
+  steps:
+    # all of these steps can be replaced by the single
+    # - eas/build
+    # call
+    # this example aims to show what steps are executed under the hood
+    # it can be useful to know it if somebody wants to alter and customize the default build process
+
+    - uses: eas/checkout
+
+    # if you are not interested in using custom .npmrc config you can skip it
+    - uses: eas/use_npm_token
+
+    - run: npm install --legacy-peer-deps
+
+    - uses: eas/resolve_build_config
+
+    - uses: eas/prebuild
+
+    - uses: eas/run_gradle
+
+    - uses: eas/find_and_upload_build_artifacts

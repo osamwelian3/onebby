@@ -1,10 +1,20 @@
 import { ThemedText } from "@/components/ThemedText";
+import { useAppDispatch } from "@/store";
+import { fetchCategory } from "@/store/category/category";
+import { fetchProduct } from "@/store/product/product";
 import { DrawerContentComponentProps, DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { useRouter } from "expo-router";
 import { Drawer } from "expo-router/drawer";
+import { useEffect } from "react";
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
   const router = useRouter();
+  const dispatch = useAppDispatch()
+  
+  useEffect(() => {
+    dispatch(fetchCategory())
+    dispatch(fetchProduct())
+  }, [])
 
   return (
     <DrawerContentScrollView {...props}>

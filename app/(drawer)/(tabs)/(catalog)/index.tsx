@@ -11,22 +11,11 @@ import CategoryLayout from '../../../../components/category_layout';
 import { useNavigation } from 'expo-router';
 import { useRouteInfo } from 'expo-router/build/hooks';
 import { Colors } from '@/constants/Colors';
-import { useThemeColor } from '@/hooks/useThemeColor';
-import { useEffect } from 'react';
-import { fetchCategory } from '@/store/category/category';
-import { useDispatch, useSelector } from 'react-redux';
-import { useAppDispatch, useAppSelector } from '@/store';
-import { FlatList } from 'react-native-gesture-handler';
+import CategoryComponent from '@/components/CategoryComponent';
 
 const {width, height} = Dimensions.get('window');
 
 export default function HomeScreen() {
-  const dispatch = useAppDispatch();
-  const categories = useAppSelector((state) => state.category)
-
-  useEffect(() => {
-    dispatch(fetchCategory())
-  }, [])
 
   const navigation = useNavigation();
   console.log(useRouteInfo())
@@ -54,9 +43,7 @@ export default function HomeScreen() {
       </ThemedView>
       <ScrollView style={{flex: 1}} nestedScrollEnabled={true}>
         <CarouselView />
-        <FlatList />
-        <CategoryLayout />
-        <CategoryLayout />
+        <CategoryComponent />
         <View style={{height: 5}}></View>
       </ScrollView>
     </ThemedView>

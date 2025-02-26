@@ -1,24 +1,28 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { Alert } from "react-native";
 
-export interface Category {
+export interface Product {
     id: Number,
     name: string,
-    description: string
+    description: string,
+    price: string,
+    id_category_default: Number,
+    id_default_image: Number,
+    active: Number
 }
 
-export const fetchCategory = createAsyncThunk(
-    'category/list',
+export const fetchProduct = createAsyncThunk(
+    'product/list',
     async (_, {dispatch}) => {
-        return new Promise<Category[]>((resolve, reject) => {
+        return new Promise<Product[]>((resolve, reject) => {
             try {
                 const api_key = process.env.PRESTA_SHOP_AUTH_TOKEN || "7S6NTR3BIEQ57EZYKSDV2UMHZZNGS38S";
                 console.log("API KEY: ", api_key);
                 let config = {
                     method: 'get',
                     maxBodyLength: Infinity,
-                    url: 'https://www.onebby.it/api/categories/?display=[id,name,description]&output_format=JSON',
+                    url: 'https://www.onebby.it/api/products/?display=[id,name,description,price,id_category_default,active,id_default_image]&output_format=JSON&filter[active]=1',
                     auth: {
                         username: api_key,
                         password: ''
@@ -27,16 +31,15 @@ export const fetchCategory = createAsyncThunk(
                 
                 axios.request(config)
                 .then((response) => {
-                    resolve(response.data.categories as Category[])
+                    resolve(response.data.products as Product[])
                 })
                 .catch((error) => {
                     console.log(error);
-                    // throw new Error("Error fetching categories: "+error);
                     reject(error);
                 });
             
             } catch (error) {
-                Alert.alert('Fetch Error', 'An error occured trying to fetch categories. Error: '+error);
+                Alert.alert('Fetch Error', 'An error occured trying to fetch products. Error: '+error);
                 // throw new Error("Fetch Error: "+error);
                 reject(error);
             }
@@ -44,38 +47,38 @@ export const fetchCategory = createAsyncThunk(
     }
 )
 
-export interface CategoryState {
+export interface ProductState {
     loading: boolean,
-    categories: Category[]
+    products: Product[]
 }
 
-const initialState: CategoryState = {
+const initialState: ProductState = {
   loading: false,
-  categories: new Array<Category>()
+  products: new Array<Product>()
 };
 
-export const categorySlice = createSlice({
-  name: "category",
+export const productSlice = createSlice({
+  name: "product",
   initialState,
   reducers: {
 
   },
   extraReducers(builder) {
       builder
-        .addCase(fetchCategory.fulfilled, (state, action) => {
-            // console.log('Fetch Categories Success: '+JSON.stringify(action.payload, null, 2));
+        .addCase(fetchProduct.fulfilled, (state, action) => {
+            // console.log('Fetch Product Success: '+JSON.stringify(action.payload, null, 2));
             state.loading = false;
-            state.categories = action.payload
+            state.products = action.payload
         })
-        .addCase(fetchCategory.pending, (state) => {
+        .addCase(fetchProduct.pending, (state) => {
             state.loading = true;
         })
-        .addCase(fetchCategory.rejected, (state, action) => {
+        .addCase(fetchProduct.rejected, (state, action) => {
             console.log('Fetch Rejection: '+JSON.stringify(action.error.message, null, 2));
             state.loading = false;
         })
   },
 });
 
-export const { } = categorySlice.actions;
-export default categorySlice.reducer;
+export const { } = productSlice.actions;
+export default productSlice.reducer;

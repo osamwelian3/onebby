@@ -1,4 +1,3 @@
-import { Product } from "@/constants/types";
 import * as React from "react";
 import { Dimensions, Text, View, Image, ViewProps, TouchableOpacity } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
@@ -10,6 +9,7 @@ import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
 import { IconSymbol } from "./ui/IconSymbol";
 import ProductItem from "./ProductItem";
+import { Product } from "@/store/product/product";
  
 const width = Dimensions.get("window").width;
 

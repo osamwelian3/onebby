@@ -26,7 +26,7 @@ const CategoryLayout = ({item}: CategoryLayoutProps) => {
     <ThemedView>
         <ThemedView style={{margin: 20}}>
             <ThemedView style={{flexDirection: 'row', alignItems: 'center'}}>
-                <ThemedText allowFontScaling style={{fontWeight: 'bold', fontSize: 26}}>{item.category.name}</ThemedText>
+                <ThemedText allowFontScaling style={{fontWeight: 'bold', fontSize: 26, verticalAlign: 'middle', paddingVertical: 10}}>{item.category.name}</ThemedText>
                 <ThemedView style={{height: 2, width: width/3, margin: 10, backgroundColor: '#641691' }}></ThemedView>
             </ThemedView>
             <ThemedText numberOfLines={3} ellipsizeMode='tail' style={{color: "#641691"}}>

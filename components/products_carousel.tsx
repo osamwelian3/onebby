@@ -10,6 +10,7 @@ import { ThemedView } from "./ThemedView";
 import { IconSymbol } from "./ui/IconSymbol";
 import ProductItem from "./ProductItem";
 import { Product } from "@/store/product/product";
+import { FlashList } from "@shopify/flash-list";
  
 const width = Dimensions.get("window").width;
 
@@ -36,7 +37,15 @@ function ProductsCarousel({products}: ProductsCarouselProps) {
     <View style={{ flex: 1 }} 
       id="carousel-component"
 			dataSet={{ kind: "custom-animations", name: "multiple" }}>
-      <Carousel
+        <FlashList 
+          data={products}
+          estimatedItemSize={1000}
+          showsHorizontalScrollIndicator={false}
+          horizontal={true}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({item, index}) => <ProductItem style={{width: width/2, height: width/1.5}} item={item} />}
+          />
+      {/* <Carousel
         ref={ref}
         width={width / 2}
         loop
@@ -55,7 +64,7 @@ function ProductsCarousel({products}: ProductsCarouselProps) {
         renderItem={({ item, index }) => (
           <ProductItem item={item} />
         )}
-      />
+      /> */}
  
       {/* <Pagination.Basic
         progress={progress}

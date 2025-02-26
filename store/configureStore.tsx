@@ -5,7 +5,7 @@ import { createExpoFileSystemStorage } from "redux-persist-expo-file-system-stor
 import { persistReducer } from "redux-persist";
 import { categorySlice } from "./category/category";
 import { productSlice } from "./product/product";
-console.log('Document Directory:',documentDirectory);
+// console.log('Document Directory:',documentDirectory);
 export const expoFileSystemStorage = createExpoFileSystemStorage({
   storagePath: `${documentDirectory}customPathName/`,
   encoding: EncodingType.UTF8,

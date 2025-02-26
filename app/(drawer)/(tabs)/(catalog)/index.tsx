@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Platform, ScrollView, TextInput, Dimensions, StatusBar, TouchableOpacity, View, useColorScheme } from 'react-native';
+import { Image, StyleSheet, Platform, ScrollView, TextInput, Dimensions, StatusBar, TouchableOpacity, View, useColorScheme, ActivityIndicator } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -12,10 +12,16 @@ import { useNavigation } from 'expo-router';
 import { useRouteInfo } from 'expo-router/build/hooks';
 import { Colors } from '@/constants/Colors';
 import CategoryComponent from '@/components/CategoryComponent';
+import { useEffect, useState } from 'react';
 
 const {width, height} = Dimensions.get('window');
 
 export default function HomeScreen() {
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setLoading(false)
+  }, [])
 
   const navigation = useNavigation();
   console.log(useRouteInfo())
@@ -44,6 +50,7 @@ export default function HomeScreen() {
       <ScrollView style={{flex: 1}} nestedScrollEnabled={true}>
         <CarouselView />
         <CategoryComponent />
+        {loading && <ActivityIndicator size={'large'} color={'black'} />}
         <View style={{height: 5}}></View>
       </ScrollView>
     </ThemedView>

@@ -1,4 +1,4 @@
-import { Action, AnyAction, combineReducers, Reducer } from "@reduxjs/toolkit";
+import { Action, combineReducers, Reducer } from "@reduxjs/toolkit";
 import { documentDirectory, EncodingType } from "expo-file-system";
 import { createExpoFileSystemStorage } from "redux-persist-expo-file-system-storage";
 
@@ -11,6 +11,7 @@ export const expoFileSystemStorage = createExpoFileSystemStorage({
   encoding: EncodingType.UTF8,
   debug: true,
 });
+
 const persist = <S, A extends Action>(key: string, reducer: Reducer<S, A>) =>
   persistReducer<S, A>(
     {

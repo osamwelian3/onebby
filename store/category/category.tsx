@@ -5,7 +5,8 @@ import { Alert } from "react-native";
 export interface Category {
     id: Number,
     name: string,
-    description: string
+    description: string,
+    translated?: Category
 }
 
 export const fetchCategory = createAsyncThunk(
@@ -46,19 +47,23 @@ export const fetchCategory = createAsyncThunk(
 
 export interface CategoryState {
     loading: boolean,
-    categories: Category[]
+    categories: Category[],
+    translate: boolean
 }
 
 const initialState: CategoryState = {
   loading: false,
-  categories: new Array<Category>()
+  categories: new Array<Category>(),
+  translate: false
 };
 
 export const categorySlice = createSlice({
   name: "category",
   initialState,
   reducers: {
-
+    setTranslate: (state, action) => {
+        state.translate = action.payload
+    }
   },
   extraReducers(builder) {
       builder
@@ -77,5 +82,5 @@ export const categorySlice = createSlice({
   },
 });
 
-export const { } = categorySlice.actions;
+export const { setTranslate } = categorySlice.actions;
 export default categorySlice.reducer;

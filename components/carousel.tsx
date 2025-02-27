@@ -64,4 +64,4 @@ function CarouselLayout() {
   );
 }
 
-export default CarouselLayout
+export default React.memo(CarouselLayout)

@@ -1,10 +1,10 @@
-import { Dimensions, StyleSheet, Text, ToastAndroid, View, ViewProps } from 'react-native'
+import { ActivityIndicator, Dimensions, StyleSheet, Text, ToastAndroid, View, ViewProps } from 'react-native'
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { ThemedView } from './ThemedView'
 import { useAppSelector } from '@/store';
 import { GroupedProducts, groupProductsByCategory } from '@/utils/util';
 import CategoryLayout from './category_layout';
-import { FlatList } from 'react-native-gesture-handler';
+import CarouselView from '@/components/carousel'
 import { FlashList } from '@shopify/flash-list';
 
 const {width, height} = Dimensions.get('window')
@@ -16,6 +16,10 @@ const CategoryComponent = () => {
   const categoriesLoading = useAppSelector((state) => state.category.loading);
   const products = useAppSelector((state) => state.product.products);
   const productsLoading = useAppSelector((state) => state.product.loading);
+
+  console.log('Categories: ', JSON.stringify(categories).length)
+
+  console.log('Products: ', JSON.stringify(products).length)
 
   useEffect(() => {
     if (!categoriesLoading && categories.length > 0) {
@@ -40,13 +44,22 @@ const CategoryComponent = () => {
     )
   }, [])
 
+  const renderCarousel = useCallback(() => <CarouselView />, [])
+
+  if (groupedProducts.length === 0) {
+    return (
+      <ActivityIndicator size={'large'}  />
+    )
+  }
+
   return (
     <ThemedView>
         <FlashList
          data={data}
          estimatedItemSize={100}
+         ListHeaderComponent={renderCarousel}
          showsVerticalScrollIndicator={false}
-         estimatedListSize={{height: (3.5/4)*height,width}}
+         estimatedListSize={{height: (3.8/4)*height,width}}
          keyExtractor={(item) => item.category.id.toString()}
          renderItem={renderItem}/>
     </ThemedView>

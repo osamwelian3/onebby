@@ -1,18 +1,14 @@
-import { Image, StyleSheet, Platform, ScrollView, TextInput, Dimensions, StatusBar, TouchableOpacity, View, useColorScheme, ActivityIndicator } from 'react-native';
+import { Image, StyleSheet, Platform, ScrollView, Dimensions, StatusBar, View, ActivityIndicator } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { ThemedTextInput } from '@/components/ThemedTextInput';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import CarouselView from '@/components/carousel';
-import CategoryLayout from '../../../../components/category_layout';
 import { useNavigation } from 'expo-router';
 import { useRouteInfo } from 'expo-router/build/hooks';
-import { Colors } from '@/constants/Colors';
 import CategoryComponent from '@/components/CategoryComponent';
 import { useEffect, useState } from 'react';
+import Header from '@/components/Header';
 
 const {width, height} = Dimensions.get('window');
 
@@ -28,31 +24,12 @@ export default function HomeScreen() {
   console.log(navigation.getId())
   return (
     <ThemedView style={styles.root}>
-      <ThemedView style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', width: width-20, position: 'sticky'}}>
-        <TouchableOpacity activeOpacity={1} onPress={() => navigation.openDrawer()}>
-          <ThemedView style={{padding: 10}}>
-            {/* <IconSymbol name='back-arrow' size={30} /> */}
-            <Image source={require('@/assets/images/onebby_logo.jpg')} style={{width: 40, height: 40}} />
-          </ThemedView>
-        </TouchableOpacity>
-        <ThemedTextInput 
-          placeholder="Cerca..."
-          type="outlined"
-          leftIcon={<IconSymbol name='search' size={20} color={useColorScheme() === 'light' ? Colors.dark.background : Colors.light.background} />}
-          style={{ marginTop: 5, width: width/1.5  }}
-        />
-        <TouchableOpacity>
-          <ThemedView style={{padding: 10}}>
-            <IconSymbol name='cart' size={30} color={useColorScheme() === 'light' ? Colors.dark.background : Colors.light.background} />
-          </ThemedView>
-        </TouchableOpacity>
-      </ThemedView>
-      <ScrollView style={{flex: 1}} nestedScrollEnabled={true}>
-        <CarouselView />
+      <Header />
+      <ThemedView style={{flex: 1}}>
         <CategoryComponent />
         {loading && <ActivityIndicator size={'large'} color={'black'} />}
         <View style={{height: 5}}></View>
-      </ScrollView>
+      </ThemedView>
     </ThemedView>
   )
   return (

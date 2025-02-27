@@ -16,38 +16,7 @@ export type ProductItemProps = ViewProps & {
 }
 
 const ProductItem = ({ style, item }: ProductItemProps) => {
-  // const router = useRouter()
-  // const [imgUri, setImgUri] = useState<string | null>(null)
-
-  const username = "7S6NTR3BIEQ57EZYKSDV2UMHZZNGS38S"
-  const password = "" // If password is empty, ensure API allows it
-  const credentials = btoa(`${username}:${password}`) // Fix Base64 encoding
-
-  // useEffect(() => {
-  //   const fetchImage = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `https://www.onebby.it/api/images/products/${item.id}/${item.id_default_image}`,
-  //         {
-  //           headers: {
-  //             Authorization: `Basic ${credentials}`,
-  //           },
-  //           responseType: 'blob', // Fetch as binary data
-  //         }
-  //       )
-
-  //       const reader = new FileReader();
-  //       reader.onloadend = () => {
-  //         setImgUri(reader.result as string); // ✅ Converts Blob to Base64
-  //       };
-  //       reader.readAsDataURL(response.data);
-  //     } catch (error) {
-  //       console.error("Image Fetch Error: ", error)
-  //     }
-  //   }
-
-  //   fetchImage()
-  // }, [item.id, item.id_default_image])
+  const router = useRouter()
 
   return (
     <ThemedView
@@ -65,18 +34,9 @@ const ProductItem = ({ style, item }: ProductItemProps) => {
         style
       ]}
     >
-      <TouchableOpacity activeOpacity={0.8} style={{ position: 'relative', alignItems: 'center' }}>
-        {/* {imgUri ? (
-          <Image
-            source={{ uri: imgUri, cache: 'force-cache' }}
-            resizeMode='contain'
-            style={{ width: width / 3, height: width / 3, borderRadius: 10 }}
-            onError={(error) => console.log("Product Image Error: ", error)}
-          />
-        ) : (
-          <ThemedText>Loading...</ThemedText> // Placeholder while loading
-        )} */}
-        <OptimizedImage productId={item.id} imageId={item.id_default_image} credentials={credentials} />
+      <TouchableOpacity activeOpacity={0.8} style={{ position: 'relative', alignItems: 'center' }} onPress={() => router.push(`/(drawer)/product/${item.id}`)}>
+        
+        <OptimizedImage productId={item.id} imageId={item.id_default_image} />
 
         <ThemedView style={{ position: 'absolute', right: 10, top: 10, borderWidth: 1, borderRadius: 20, justifyContent: 'center', alignItems: 'center', padding: 5, backgroundColor: "#641691" }}>
           <IconSymbol name="favorite-border" size={20} />
@@ -86,7 +46,7 @@ const ProductItem = ({ style, item }: ProductItemProps) => {
           {item.name}
         </ThemedText>
         <ThemedText style={{ textAlign: 'center', fontWeight: '900' }}>
-          {Number(item.price).toFixed(2)} <ThemedText>€</ThemedText>
+          {Number(item.price).toFixed(2)} <ThemedText ignore={true}>€</ThemedText>
         </ThemedText>
       </TouchableOpacity>
     </ThemedView>

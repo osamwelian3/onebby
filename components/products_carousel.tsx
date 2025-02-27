@@ -19,8 +19,11 @@ export type ProductsCarouselProps = ViewProps & {
 }
  
 function ProductsCarousel({products}: ProductsCarouselProps) {
+  console.log('ProductsCarousel')
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
+
+  const data = React.useMemo(() => products, [products])
   
   const onPressPagination = (index: number) => {
     ref.current?.scrollTo({
@@ -32,18 +35,18 @@ function ProductsCarousel({products}: ProductsCarouselProps) {
       animated: true,
     });
   };
+
+  const renderItem = React.useCallback(({item}: {item: Product}) => <ProductItem key={item.id.toString()} style={{width: width/2, height: width/1.5}} item={item} />, [])
  
   return (
-    <View style={{ flex: 1 }} 
-      id="carousel-component"
-			dataSet={{ kind: "custom-animations", name: "multiple" }}>
+    <View style={{ flex: 1 }}>
         <FlashList 
-          data={products}
+          data={data}
           estimatedItemSize={1000}
           showsHorizontalScrollIndicator={false}
           horizontal={true}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({item, index}) => <ProductItem style={{width: width/2, height: width/1.5}} item={item} />}
+          renderItem={renderItem}
           />
       {/* <Carousel
         ref={ref}
@@ -77,4 +80,4 @@ function ProductsCarousel({products}: ProductsCarouselProps) {
   );
 }
 
-export default ProductsCarousel
+export default React.memo(ProductsCarousel)

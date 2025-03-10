@@ -1,3 +1,4 @@
+import { GroupedProducts } from "@/utils/util";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { Alert } from "react-native";
@@ -9,7 +10,8 @@ export interface Product {
     price: string,
     id_category_default: Number,
     id_default_image: Number,
-    active: Number
+    active: Number,
+    image_ids?: Array<Number>
 }
 
 export const fetchProduct = createAsyncThunk(
@@ -17,7 +19,7 @@ export const fetchProduct = createAsyncThunk(
     async (_, {dispatch}) => {
         return new Promise<Product[]>((resolve, reject) => {
             try {
-                const api_key = process.env.PRESTA_SHOP_AUTH_TOKEN || "7S6NTR3BIEQ57EZYKSDV2UMHZZNGS38S";
+                const api_key = "7S6NTR3BIEQ57EZYKSDV2UMHZZNGS38S";
                 console.log("API KEY: ", api_key);
                 let config = {
                     method: 'get',
@@ -49,19 +51,23 @@ export const fetchProduct = createAsyncThunk(
 
 export interface ProductState {
     loading: boolean,
-    products: Product[]
+    products: Product[],
+    groupedProducts: GroupedProducts[]
 }
 
 const initialState: ProductState = {
   loading: false,
-  products: new Array<Product>()
+  products: new Array<Product>(),
+  groupedProducts: new Array<GroupedProducts>()
 };
 
 export const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-
+    setAppGroupedProducts: (state, action) => {
+        state.groupedProducts = action.payload
+    }
   },
   extraReducers(builder) {
       builder
@@ -80,5 +86,5 @@ export const productSlice = createSlice({
   },
 });
 
-export const { } = productSlice.actions;
+export const { setAppGroupedProducts } = productSlice.actions;
 export default productSlice.reducer;

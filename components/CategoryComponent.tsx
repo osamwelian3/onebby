@@ -1,11 +1,12 @@
 import { ActivityIndicator, Dimensions, StyleSheet, Text, ToastAndroid, View, ViewProps } from 'react-native'
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { ThemedView } from './ThemedView'
-import { useAppSelector } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { GroupedProducts, groupProductsByCategory } from '@/utils/util';
 import CategoryLayout from './category_layout';
 import CarouselView from '@/components/carousel'
 import { FlashList } from '@shopify/flash-list';
+import { setAppGroupedProducts } from '@/store/product/product';
 
 const {width, height} = Dimensions.get('window')
 
@@ -16,6 +17,7 @@ const CategoryComponent = () => {
   const categoriesLoading = useAppSelector((state) => state.category.loading);
   const products = useAppSelector((state) => state.product.products);
   const productsLoading = useAppSelector((state) => state.product.loading);
+  const dispatch = useAppDispatch()
 
   console.log('Categories: ', JSON.stringify(categories).length)
 
@@ -24,9 +26,12 @@ const CategoryComponent = () => {
   useEffect(() => {
     if (!categoriesLoading && categories.length > 0) {
         if (!productsLoading && products.length > 0) {
-          ToastAndroid.show("Starting Processing", ToastAndroid.SHORT);
-          setGroupedProducts(groupProductsByCategory(products, categories))
-          ToastAndroid.show("Processing Complete", ToastAndroid.LONG);
+          // ToastAndroid.show("Starting Processing", ToastAndroid.SHORT);
+          const gp = groupProductsByCategory(products, categories)
+          setGroupedProducts(gp)
+          dispatch(setAppGroupedProducts(gp))
+
+          // ToastAndroid.show("Processing Complete", ToastAndroid.LONG);
         }
     }
   }, [categories, categoriesLoading, products, productsLoading])

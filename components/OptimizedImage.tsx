@@ -72,7 +72,7 @@ const OptimizedImage = memo(({ productId, imageId, style }: { productId: Number,
           }
         };
       } catch (error) {
-        console.error("Image Fetch Error:", error);
+        // console.error("Image Fetch Error:", error);
         return await fetchImage(cacheFileUri)
       }
     };
@@ -102,13 +102,13 @@ const OptimizedImage = memo(({ productId, imageId, style }: { productId: Number,
       {loading ? (
         <ActivityIndicator size="small" color="#641691" />
       ) : (
-        imgUri && (
+        imgUri ? (
           <Image
             source={{ uri: imgUri, cache: 'force-cache' }}
             resizeMode='contain'
             style={style ? style : { width: width / 3, height: width / 3, borderRadius: 10 }}
           />
-        )
+        ) : null
       )}
     </View>
   );

@@ -27,7 +27,7 @@ export default function HomeScreen() {
       <Header />
       <ThemedView style={{flex: 1}}>
         <CategoryComponent />
-        {loading && <ActivityIndicator size={'large'} color={'black'} />}
+        {loading ? <ActivityIndicator size={'large'} color={'black'} /> : null}
         <View style={{height: 5}}></View>
       </ThemedView>
     </ThemedView>

@@ -14,7 +14,7 @@ export const fetchCategory = createAsyncThunk(
     async (_, {dispatch}) => {
         return new Promise<Category[]>((resolve, reject) => {
             try {
-                const api_key = process.env.PRESTA_SHOP_AUTH_TOKEN || "7S6NTR3BIEQ57EZYKSDV2UMHZZNGS38S";
+                const api_key = "7S6NTR3BIEQ57EZYKSDV2UMHZZNGS38S";
                 console.log("API KEY: ", api_key);
                 let config = {
                     method: 'get',

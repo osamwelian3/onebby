@@ -1,14 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { Alert } from "react-native";
 
 const GOOGLE_API_KEY = "AIzaSyC0gyU6bISLo1Kh3znsJu51b3Y3x-elnnM";
 const API_URL = "https://api-free.deepl.com/v2/translate";
 
 const translateText = async (text: string, targetLanguage: string) => {
-    if (text === 'Casa') {
-        Alert.alert(text, targetLanguage)
-    }
     try {
         const cache = await AsyncStorage.getItem(text)
         if (cache) {
@@ -37,7 +33,16 @@ const translateText = async (text: string, targetLanguage: string) => {
         return response.data.translations[0].text as string
         
     } catch (error) {
-        console.error('Error: ', error)
+        // if (typeof error === "string") {
+        //     error.toUpperCase() // works, `e` narrowed to string
+        // } else if (error instanceof Error) {
+        //     error.message // works, `e` narrowed to Error
+        //     console.error('Error message: ', error.message)
+        //     console.error('Error cause: ', error.cause)
+        //     console.error('Error name: ', error.name)
+        //     console.error('Error stack: ', error.stack)
+        // }
+        // console.error('Error: ', error)
         return text;
     }
 }

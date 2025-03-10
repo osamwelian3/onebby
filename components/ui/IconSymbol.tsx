@@ -18,7 +18,14 @@ const MAPPING = {
   'back-arrow': 'arrow-back-ios',
   'cart': 'shopping-cart',
   'favorite-border': 'favorite-border',
-  'filter-list': 'filter-list'
+  'filter-list': 'filter-list',
+  'arrow-drop-down': 'arrow-drop-down',
+  'settings': 'settings',
+  'forward-arrow': 'arrow-forward',
+  'wallet': 'wallet',
+  'location-pin': 'location-pin',
+  'help': 'help-outline',
+  'money': 'money'
 } as Partial<
   Record<
     import('expo-symbols').SymbolViewProps['name'],

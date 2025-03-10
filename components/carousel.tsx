@@ -46,20 +46,12 @@ function CarouselLayout() {
               justifyContent: "center",
             }}
           >
-            <TouchableOpacity activeOpacity={1} onPress={() => router.push(`/(drawer)/(tabs)/(catalog)/category/${index}`)}>
+            <TouchableOpacity activeOpacity={1} onPress={() => null}>
               <Image source={{uri: item}} resizeMode='cover' style={{width: width, height: width/2}} />
             </TouchableOpacity>
           </View>
         )}
       />
- 
-      {/* <Pagination.Basic
-        progress={progress}
-        data={data}
-        dotStyle={{ backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 50 }}
-        containerStyle={{ gap: 5, marginTop: 10 }}
-        onPress={onPressPagination}
-      /> */}
     </View>
   );
 }

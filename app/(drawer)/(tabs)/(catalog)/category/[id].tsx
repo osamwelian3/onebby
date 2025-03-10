@@ -1,40 +1,49 @@
-import { Dimensions, StatusBar, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from 'react-native'
-import React, { useCallback } from 'react'
+import { Alert, Dimensions, StatusBar, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from 'react-native'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Colors } from '@/constants/Colors';
-import { Product } from '@/constants/types';
 import ProductItem from '@/components/ProductItem';
 import { FlatList } from 'react-native-gesture-handler';
+import { FlashList } from '@shopify/flash-list';
+import { Product } from '@/store/product/product';
+import { useAppSelector } from '@/store';
+import { Category } from '@/store/category/category';
+import { GroupedProducts, groupProductsByCategory } from '@/utils/util';
+import Header from '@/components/Header';
 
 const {width, height} = Dimensions.get('window');
 
-const products: Product[] = [
-    {id: 0, name: "Whirlpool FFB116SILVERIT Lavatrice 11 KG Centrifuga 1400 Giri Classe A colore Silver - FFB 116 SILVER IT", image: "https://www.onebby.it/87556-home_default/whirlpool-whirlpool-ffb116silverit-lavatrice-11-kg-centrifuga-1400-giri-classe-a-colore-silver-ffb-116-silver-it.jpg", price: 443.58},
-    {id: 1, name: "Whirlpool FFB116SILVERIT Lavatrice 11 KG Centrifuga 1400 Giri Classe A colore Silver - FFB 116 SILVER IT", image: "https://www.onebby.it/87556-home_default/whirlpool-whirlpool-ffb116silverit-lavatrice-11-kg-centrifuga-1400-giri-classe-a-colore-silver-ffb-116-silver-it.jpg", price: 443.58},
-    {id: 2, name: "Whirlpool FFB116SILVERIT Lavatrice 11 KG Centrifuga 1400 Giri Classe A colore Silver - FFB 116 SILVER IT", image: "https://www.onebby.it/87556-home_default/whirlpool-whirlpool-ffb116silverit-lavatrice-11-kg-centrifuga-1400-giri-classe-a-colore-silver-ffb-116-silver-it.jpg", price: 443.58},
-    {id: 3, name: "Whirlpool FFB116SILVERIT Lavatrice 11 KG Centrifuga 1400 Giri Classe A colore Silver - FFB 116 SILVER IT", image: "https://www.onebby.it/87556-home_default/whirlpool-whirlpool-ffb116silverit-lavatrice-11-kg-centrifuga-1400-giri-classe-a-colore-silver-ffb-116-silver-it.jpg", price: 443.58},
-    {id: 4, name: "Whirlpool FFB116SILVERIT Lavatrice 11 KG Centrifuga 1400 Giri Classe A colore Silver - FFB 116 SILVER IT", image: "https://www.onebby.it/87556-home_default/whirlpool-whirlpool-ffb116silverit-lavatrice-11-kg-centrifuga-1400-giri-classe-a-colore-silver-ffb-116-silver-it.jpg", price: 443.58},
-    {id: 5, name: "Whirlpool FFB116SILVERIT Lavatrice 11 KG Centrifuga 1400 Giri Classe A colore Silver - FFB 116 SILVER IT", image: "https://www.onebby.it/87556-home_default/whirlpool-whirlpool-ffb116silverit-lavatrice-11-kg-centrifuga-1400-giri-classe-a-colore-silver-ffb-116-silver-it.jpg", price: 443.58},
-    {id: 6, name: "Whirlpool FFB116SILVERIT Lavatrice 11 KG Centrifuga 1400 Giri Classe A colore Silver - FFB 116 SILVER IT", image: "https://www.onebby.it/87556-home_default/whirlpool-whirlpool-ffb116silverit-lavatrice-11-kg-centrifuga-1400-giri-classe-a-colore-silver-ffb-116-silver-it.jpg", price: 443.58},
-]
-
 const CategoryLayoutScreen = () => {
     const { id } = useLocalSearchParams();
+    // const id = '90';
+    console.log('Category id: ', id)
+    const categor = useAppSelector((state) => state.product.groupedProducts)
+    console.log('Categories len: ', JSON.stringify(categor.filter((cat) => cat.category.id.toString() === id), null, 2))
+    // Alert.alert('grpd prdcts', 'count: '+categor.length)
+    const category = categor.find((item) => item.category.id.toString() === id) as GroupedProducts
+    console.log('Category: ', JSON.stringify(category, null, 2))
+    console.log('Category name: ', category.category.name)
+    // const products = useAppSelector((state) => state.product.products.filter((product) => product.id_category_default === category.id))
+    
     const router = useRouter();
     const goBack = useCallback(() => {
       router.back();
     }, [router]);
 
+    const data = useMemo(() => category.products, [category.products, category])
+
+    const renderItem = useCallback(({item}: {item: Product}) => (
+      <ProductItem item={item} style={{marginBottom: 20, width: width/2}} />
+    ), [])
+
   return (
     <ThemedView style={styles.root}>
+      <Header leftIcon='back' />
       <ThemedView style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
-        <TouchableOpacity onPress={goBack}>
-          <IconSymbol name='back-arrow' size={30} color={useColorScheme() === 'light' ? Colors.dark.background : Colors.light.background} />
-        </TouchableOpacity>
-        <ThemedText numberOfLines={1} ellipsizeMode='tail' style={{fontWeight: '900', fontSize: 26, marginTop: 10, padding: 0, verticalAlign: 'middle', textAlignVertical: 'center', paddingVertical: 10 }}>Washing Machines</ThemedText>
+        <ThemedText numberOfLines={1} ellipsizeMode='tail' style={{fontWeight: '900', fontSize: 26, marginTop: 10, padding: 0, verticalAlign: 'middle', textAlignVertical: 'center', paddingVertical: 10 }}>{category.category.name}</ThemedText>
       </ThemedView>
       <ThemedView style={{flexDirection: 'row'}}>
         <TouchableOpacity style={{borderWidth: 1, borderColor: useColorScheme() === 'light' ? Colors.dark.background : Colors.light.background, width: 30, borderRadius: 10 }}>
@@ -43,11 +52,12 @@ const CategoryLayoutScreen = () => {
         <ThemedText>  Filter</ThemedText>
       </ThemedView>
       <ThemedView style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', marginTop: 10}}>
-        <FlatList
-          data={products}
+        <FlashList
+          data={data}
           showsVerticalScrollIndicator={false}
-          keyExtractor={(item, _) => item.id.toString()}
-          renderItem={({item}) => <ProductItem item={item} style={{marginBottom: 20, width: width/2}} />} 
+          // estimatedItemSize={data.length-1}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderItem} 
           numColumns={2}
           style={{
             height: '100%'

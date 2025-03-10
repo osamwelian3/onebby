@@ -4,19 +4,20 @@
     "slug": "onebby",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/onebby_logo.jpg",
-    "scheme": "myapp",
+    "icon": "./assets/images/ic_launcher.png",
+    "scheme": "onebby",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/onebby_logo.jpg",
+        "foregroundImage": "./assets/images/ic_launcher.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.onebby"
+      "package": "com.onebbydev"
     },
     "web": {
       "bundler": "metro",
@@ -33,7 +34,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-apple-authentication"
     ],
     "experiments": {
       "typedRoutes": true

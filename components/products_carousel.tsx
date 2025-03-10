@@ -36,10 +36,10 @@ function ProductsCarousel({products}: ProductsCarouselProps) {
     });
   };
 
-  const renderItem = React.useCallback(({item}: {item: Product}) => <ProductItem key={item.id.toString()} style={{width: width/2, height: width/1.5}} item={item} />, [])
+  const renderItem = React.useCallback(({item}: {item: Product}) => <ProductItem key={item.id.toString()} style={{width: width/3, height: width/2.2}} item={item} />, [])
  
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, marginRight: 5 }}>
         <FlashList 
           data={data}
           estimatedItemSize={1000}
@@ -48,34 +48,6 @@ function ProductsCarousel({products}: ProductsCarouselProps) {
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
           />
-      {/* <Carousel
-        ref={ref}
-        width={width / 2}
-        loop
-        data={products}
-        onProgressChange={progress}
-        containerStyle={{
-          flex: 1,
-          width: width,
-          minHeight: width/1.5
-        }}
-        style={{
-          width: width,
-          flexDirection: 'column',
-          flex: 1
-        }}
-        renderItem={({ item, index }) => (
-          <ProductItem item={item} />
-        )}
-      /> */}
- 
-      {/* <Pagination.Basic
-        progress={progress}
-        data={products}
-        dotStyle={{ backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 50 }}
-        containerStyle={{ gap: 5, marginTop: 10 }}
-        onPress={onPressPagination}
-      /> */}
     </View>
   );
 }

@@ -108,12 +108,11 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
           <FlashList 
            data={data}
            keyExtractor={(item) => item.category.id.toString()}
-           renderItem={renderCategories}
-           estimatedItemSize={data.length}/>
+           renderItem={renderCategories}/>
         </ThemedView>
       </DrawerContentScrollView>
       <ThemedView style={{padding: 20, flexDirection: 'row', borderBottomWidth: 1}}>
-        <ThemedText ignore={true}>{translate ? 'Dark Mode:' : 'SDark Mode:'}   </ThemedText>
+        <ThemedText ignore={true}>{translate ? 'Dark Mode:' : 'Dark Mode:'}   </ThemedText>
         <ThemedView style={{flexDirection: 'row'}}>
           <TouchableOpacity activeOpacity={1} style={{padding: 0, backgroundColor: '#fff', width: 30, borderStartStartRadius: 35, borderStartEndRadius: 35}} onPress={() => toggleTheme()}>
             <ThemedView style={{height: 30, width: 30, borderRadius: 35, backgroundColor: 'gray', display: colorScheme === 'dark' ? 'none' : 'flex'}}>

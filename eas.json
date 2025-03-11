@@ -22,7 +22,10 @@
     },
     "production": {
       "environment": "production",
-      "autoIncrement": true
+      "autoIncrement": false,
+      "env": {
+            "ANDROID_SDK_ROOT": "/home/samian/Android/sdk"
+        }
     }
   },
   "submit": {

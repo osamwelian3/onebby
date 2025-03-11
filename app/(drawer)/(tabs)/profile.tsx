@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Image, TouchableOpacity, StatusBar, useColorScheme, Dimensions } from 'react-native'
+import { StyleSheet, Text, Image, TouchableOpacity, StatusBar, useColorScheme, Dimensions, View } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ThemedView } from '@/components/ThemedView'
 import { ThemedText } from '@/components/ThemedText'
@@ -6,8 +6,11 @@ import ParallaxScrollView from '@/components/ParallaxScrollView'
 import { IconSymbol } from '@/components/ui/IconSymbol'
 import { ScrollView } from 'react-native-gesture-handler'
 import { FlashList } from '@shopify/flash-list'
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
+import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetView } from '@gorhom/bottom-sheet'
 import * as AppleAuthentication from 'expo-apple-authentication';
+import { Colors } from '@/constants/Colors'
+import { Ionicons } from '@expo/vector-icons'
+import { useRouter } from 'expo-router'
 
 const {width, height} = Dimensions.get('window')
 
@@ -15,12 +18,24 @@ const Profile = () => {
   const colorScheme = useColorScheme()
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [isOpen, setIsOpen] = useState(true);
-  const snapPoints = ["50%"]
+  const router = useRouter()
+  const snapPoints = ["40%"]
 
   useEffect(() => {
     return () => {
       bottomSheetRef.current?.close();
     }
+  }, [])
+
+  const renderBackDrop = useCallback((props: BottomSheetBackdropProps) => {
+    return (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        pressBehavior={'close'}
+      />
+    )
   }, [])
 
   const renderHistory = useCallback(({item}: {item: any}) => (
@@ -109,36 +124,37 @@ const Profile = () => {
       </ThemedView>
       <BottomSheet
       ref={bottomSheetRef}
+      index={-1}
+      backdropComponent={renderBackDrop}
+      handleStyle={{
+        display: 'none'
+      }}
       snapPoints={snapPoints}
       enablePanDownToClose={true}>
         <BottomSheetView>
-          <ThemedView style={{width: width, height: '100%'}}>
-            <ThemedText>Hello</ThemedText>
-            <AppleAuthentication.AppleAuthenticationButton
-              buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-              buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-              cornerRadius={5}
-              style={styles.button}
-              onPress={async () => {
-                try {
-                  const credential = await AppleAuthentication.signInAsync({
-                    requestedScopes: [
-                      AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-                      AppleAuthentication.AppleAuthenticationScope.EMAIL,
-                    ],
-                  });
-                  // signed in
-                } catch (e) {
-                  if (e instanceof Error) {
-                    if (e.name === 'ERR_REQUEST_CANCELED') {
-                      // handle that the user canceled the sign-in flow
-                    } else {
-                      // handle other errors
-                    }
-                  }
-                }
-              }}
-            />
+          <ThemedView darkColor={'#151725'} lightColor={'#fff50'} style={{width: width, padding: 10, height: '100%', borderTopRightRadius: 10, borderTopLeftRadius: 10}}>
+            <ThemedText>Sign In or Create account</ThemedText>
+            <View style={{alignItems: 'center', marginTop: 20}}>
+              <TouchableOpacity>
+                <ThemedView style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', width: '70%', padding: 10, marginHorizontal: 10, borderRadius: 20, borderWidth: 1, marginVertical: 10}}>
+                  <Ionicons name={'logo-google'} size={30} color={colorScheme === 'dark' ? Colors.dark.icon : Colors.light.icon} />
+                  <ThemedText>Login with Google</ThemedText>
+                </ThemedView>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <ThemedView style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', width: '70%', padding: 10, marginHorizontal: 10, borderRadius: 20, borderWidth: 1, marginVertical: 10}}>
+                  <Ionicons name={'logo-facebook'} size={30} color={colorScheme === 'dark' ? Colors.dark.icon : Colors.light.icon} />
+                  <ThemedText>Login with Facebook</ThemedText>
+                </ThemedView>
+              </TouchableOpacity>
+              <ThemedText>OR</ThemedText>
+              <TouchableOpacity onPress={() => router.push('/(drawer)/profile/login')}>
+                <ThemedView style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', width: '70%', padding: 10, marginHorizontal: 10, borderRadius: 20, borderWidth: 1, marginVertical: 10}}>
+                  <Ionicons name={'mail'} size={30} color={colorScheme === 'dark' ? Colors.dark.icon : Colors.light.icon} />
+                  <ThemedText>Continue with Email</ThemedText>
+                </ThemedView>
+              </TouchableOpacity>
+            </View>
           </ThemedView>
         </BottomSheetView>
       </BottomSheet>

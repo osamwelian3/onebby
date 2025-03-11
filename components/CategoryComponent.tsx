@@ -7,6 +7,7 @@ import CategoryLayout from './category_layout';
 import CarouselView from '@/components/carousel'
 import { FlashList } from '@shopify/flash-list';
 import { setAppGroupedProducts } from '@/store/product/product';
+import { ThemedText } from './ThemedText';
 
 const {width, height} = Dimensions.get('window')
 
@@ -26,12 +27,18 @@ const CategoryComponent = () => {
   useEffect(() => {
     if (!categoriesLoading && categories.length > 0) {
         if (!productsLoading && products.length > 0) {
-          // ToastAndroid.show("Starting Processing", ToastAndroid.SHORT);
-          const gp = groupProductsByCategory(products, categories)
-          setGroupedProducts(gp)
-          dispatch(setAppGroupedProducts(gp))
-
-          // ToastAndroid.show("Processing Complete", ToastAndroid.LONG);
+          try {
+            // ToastAndroid.show("Starting Processing", ToastAndroid.SHORT);
+            const gp = groupProductsByCategory(products, categories)
+            setGroupedProducts(gp)
+            dispatch(setAppGroupedProducts(gp))
+  
+            // ToastAndroid.show("Processing Complete", ToastAndroid.LONG);
+          } catch (error) {
+            if (error instanceof Error) {
+              console.log('GroupProductsByCategory Error: ', error.message)
+            }
+          }
         }
     }
   }, [categories, categoriesLoading, products, productsLoading])
@@ -51,23 +58,24 @@ const CategoryComponent = () => {
 
   const renderCarousel = useCallback(() => <CarouselView />, [])
 
-  if (groupedProducts.length === 0) {
-    return (
-      <ActivityIndicator size={'large'}  />
-    )
-  }
-
   return (
-    <ThemedView>
-        <FlashList
-         data={data}
-         estimatedItemSize={100}
-         ListHeaderComponent={renderCarousel}
-         showsVerticalScrollIndicator={false}
-         estimatedListSize={{height: (3.8/4)*height,width}}
-         keyExtractor={(item) => item.category.id.toString()}
-         renderItem={renderItem}/>
-    </ThemedView>
+    <>
+      { groupedProducts.length > 0 ?
+        <ThemedView>
+          <FlashList
+          data={data}
+          //  estimatedItemSize={100}
+          ListHeaderComponent={renderCarousel}
+          showsVerticalScrollIndicator={false}
+          //  estimatedListSize={{height: (3.8/4)*height,width}}
+          keyExtractor={(item) => item.category.id.toString()}
+          renderItem={renderItem}/>
+        </ThemedView> 
+        :
+        <ActivityIndicator size={'large'} />
+      }
+    
+    </>
   )
 }
 

@@ -10,41 +10,41 @@ export interface CartItem {
     count: 0 | number
 }
 
-export const fetchCart = createAsyncThunk(
-    'cart/list',
-    async (_, {dispatch}) => {
-        return new Promise<CartItem>((resolve, reject) => {
-            try {
-                const api_key = "7S6NTR3BIEQ57EZYKSDV2UMHZZNGS38S";
-                console.log("API KEY: ", api_key);
-                let config = {
-                    method: 'get',
-                    maxBodyLength: Infinity,
-                    url: 'https://www.onebby.it/api/carts/?display=[id,name,description]&output_format=JSON',
-                    auth: {
-                        username: api_key,
-                        password: ''
-                    }
-                };
+// export const fetchCart = createAsyncThunk(
+//     'cart/list',
+//     async (_, {dispatch}) => {
+//         return new Promise<CartItem>((resolve, reject) => {
+//             try {
+//                 const api_key = "7S6NTR3BIEQ57EZYKSDV2UMHZZNGS38S";
+//                 console.log("API KEY: ", api_key);
+//                 let config = {
+//                     method: 'get',
+//                     maxBodyLength: Infinity,
+//                     url: 'https://www.onebby.it/api/carts/?display=[id,name,description]&output_format=JSON',
+//                     auth: {
+//                         username: api_key,
+//                         password: ''
+//                     }
+//                 };
                 
-                axios.request(config)
-                .then((response) => {
-                    resolve(response.data.carts[0] as CartItem)
-                })
-                .catch((error) => {
-                    console.log(error);
-                    // throw new Error("Error fetching categories: "+error);
-                    reject(error);
-                });
+//                 axios.request(config)
+//                 .then((response) => {
+//                     resolve(response.data.carts[0] as CartItem)
+//                 })
+//                 .catch((error) => {
+//                     console.log(error);
+//                     // throw new Error("Error fetching categories: "+error);
+//                     reject(error);
+//                 });
             
-            } catch (error) {
-                Alert.alert('Fetch Error', 'An error occured trying to fetch cart. Error: '+error);
-                // throw new Error("Fetch Error: "+error);
-                reject(error);
-            }
-        })
-    }
-)
+//             } catch (error) {
+//                 Alert.alert('Fetch Error', 'An error occured trying to fetch cart. Error: '+error);
+//                 // throw new Error("Fetch Error: "+error);
+//                 reject(error);
+//             }
+//         })
+//     }
+// )
 
 export interface CartState {
     loading: boolean,

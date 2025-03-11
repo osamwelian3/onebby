@@ -20,7 +20,7 @@ export const fetchProduct = createAsyncThunk(
         return new Promise<Product[]>((resolve, reject) => {
             try {
                 const api_key = "7S6NTR3BIEQ57EZYKSDV2UMHZZNGS38S";
-                console.log("API KEY: ", api_key);
+                console.log("API KEY products: ", api_key);
                 let config = {
                     method: 'get',
                     maxBodyLength: Infinity,
@@ -43,7 +43,7 @@ export const fetchProduct = createAsyncThunk(
             } catch (error) {
                 Alert.alert('Fetch Error', 'An error occured trying to fetch products. Error: '+error);
                 // throw new Error("Fetch Error: "+error);
-                reject(error);
+                reject(error as Error);
             }
         })
     }
@@ -65,7 +65,7 @@ export const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    setAppGroupedProducts: (state, action) => {
+    setAppGroupedProducts: (state, action: {payload: GroupedProducts[], type: string}) => {
         state.groupedProducts = action.payload
     }
   },

@@ -1,0 +1,57 @@
+name: "Build Android Release App"
+run-name: ${{ github.actor }} is building an Android Release App using Github Actions
+on: 
+  push:
+    branches: ["main"]
+  pull_request: 
+    branches: ["main"]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Java 
+        uses: actions/setup-java@v4
+        with:
+          java-version: '23'
+          distribution: "adopt"
+          cache: "gradle"
+        
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with: 
+          node-version: '22'
+
+      - name: 🏗 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Prebuild
+        run: | 
+              npx expo prebuild
+
+      - name: Change wrapper permissions
+        run: chmod +x ./android/gradlew
+
+      - name: Run Yarn Install
+        run: | 
+              npm install -g yarn
+              yarn install
+
+      - name: Publish update
+        id: generating_apk
+        run: eas build --profile preview --platform android --non-interactive --local --output=./app-release.apk          
+
+      - name: Upload APK to Artifacts
+        uses: actions/upload-artifact@v4
+        with: 
+            name: app_release.apk
+            path: ./app-release.apk
+            retention-days: 3

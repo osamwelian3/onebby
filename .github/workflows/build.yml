@@ -2,9 +2,9 @@ name: "Build Android Release App"
 run-name: ${{ github.actor }} is building an Android Release App using Github Actions
 on: 
   push:
-    branches: ["main"]
+    branches: ["main", "master"]
   pull_request: 
-    branches: ["main"]
+    branches: ["main", "master"]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -14,13 +14,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Install Java 
-        uses: actions/setup-java@v4
-        with:
-          java-version: '23'
-          distribution: "adopt"
-          cache: "gradle"
         
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -36,6 +29,13 @@ jobs:
       - name: Prebuild
         run: | 
               npx expo prebuild
+
+      - name: Install Java 
+        uses: actions/setup-java@v4
+        with:
+          java-version: '23'
+          distribution: "adopt"
+          cache: "gradle"
 
       - name: Change wrapper permissions
         run: chmod +x ./android/gradlew

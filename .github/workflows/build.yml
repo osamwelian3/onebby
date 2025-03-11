@@ -26,6 +26,11 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
+      - name: Run Yarn Install
+        run: | 
+              npm install -g yarn
+              yarn install
+
       - name: Prebuild
         run: | 
               npx expo prebuild
@@ -39,11 +44,6 @@ jobs:
 
       - name: Change wrapper permissions
         run: chmod +x ./android/gradlew
-
-      - name: Run Yarn Install
-        run: | 
-              npm install -g yarn
-              yarn install
 
       - name: Publish update
         id: generating_apk

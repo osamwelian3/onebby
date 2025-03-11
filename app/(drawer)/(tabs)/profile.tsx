@@ -54,7 +54,7 @@ const Profile = () => {
         <TouchableOpacity onPress={() => bottomSheetRef.current?.expand()} style={{borderRadius: 10, borderWidth: 1, padding: 5, borderColor: colorScheme === 'dark' ? '#fff' : 'black'}}>
           <ThemedText style={{flex: 0}}>Sign In</ThemedText>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push('/(drawer)/profile/settings')}>
           <IconSymbol name='settings' size={20} color={colorScheme === 'dark' ? 'white' : 'black'} />
         </TouchableOpacity>
       </ThemedView>
@@ -63,11 +63,11 @@ const Profile = () => {
         <ThemedView style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 15}}>
           <ThemedText>For You</ThemedText>
         </ThemedView>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{flexDirection: 'row', width: width-10, overflow: 'scroll'}}>
+        <ThemedView style={{flexDirection: 'row', width: width-10, overflow: 'scroll', flexWrap: 'wrap', rowGap: 20}}>
           <TouchableOpacity>
             <ThemedView style={{alignItems: 'center', marginRight: 20}}>
               <IconSymbol name='favorite-border' size={30} color={colorScheme === 'dark' ? 'white' : 'black'} />
-              <ThemedText style={{fontSize: 12}}>Favourites</ThemedText>
+              <ThemedText style={{fontSize: 12}}>Wishlist</ThemedText>
             </ThemedView>
           </TouchableOpacity>
           <TouchableOpacity>
@@ -84,8 +84,8 @@ const Profile = () => {
           </TouchableOpacity>
           <TouchableOpacity>
             <ThemedView style={{alignItems: 'center', marginRight: 20}}>
-              <IconSymbol name='money' size={30} color={colorScheme === 'dark' ? 'white' : 'black'} />
-              <ThemedText style={{fontSize: 12}}>Tax Information</ThemedText>
+              <Ionicons name='mail' size={30} color={colorScheme === 'dark' ? 'white' : 'black'} />
+              <ThemedText style={{fontSize: 12}}>Messages</ThemedText>
             </ThemedView>
           </TouchableOpacity>
           <TouchableOpacity>
@@ -94,7 +94,7 @@ const Profile = () => {
               <ThemedText style={{fontSize: 12}}>Help Center</ThemedText>
             </ThemedView>
           </TouchableOpacity>
-        </ScrollView>
+        </ThemedView>
       </ThemedView>
       <ThemedView style={{borderBottomWidth: 1, borderColor: '#fff', width, padding: 0, margin: 0}}></ThemedView>
       <TouchableOpacity>

@@ -154,6 +154,7 @@ export default function DrawerLayout() {
             <Drawer.Screen name="(tabs)" options={{ drawerLabel: "Home", title: "Home", headerShown: false }} />
             <Drawer.Screen name="product/[id]" options={{headerShown: false, }} />
             <Drawer.Screen name="search/search" options={{headerShown: false, }} />
+            <Drawer.Screen name="profile/settings" options={{headerShown: false, }} />
         </Drawer>
     );
 }

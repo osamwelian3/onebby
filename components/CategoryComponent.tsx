@@ -60,7 +60,7 @@ const CategoryComponent = () => {
 
   return (
     <>
-      { groupedProducts.length > 0 ?
+      { data.length > 0 ?
         <ThemedView>
           <FlashList
           data={data}

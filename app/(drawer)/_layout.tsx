@@ -14,6 +14,22 @@ import { useRouter } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { TouchableOpacity, View, Image, StatusBar, useColorScheme, Appearance } from "react-native";
+import { 
+  createMaterialTopTabNavigator,
+  MaterialTopTabNavigationOptions,
+  MaterialTopTabNavigationEventMap
+} from '@react-navigation/material-top-tabs'
+import { withLayoutContext } from 'expo-router'
+import { ParamListBase, TabNavigationState } from '@react-navigation/native'
+
+const {Navigator} = createMaterialTopTabNavigator()
+
+export const MaterialTopTabs = withLayoutContext<
+  MaterialTopTabNavigationOptions,
+  typeof Navigator,
+  TabNavigationState<ParamListBase>,
+  MaterialTopTabNavigationEventMap
+>(Navigator);
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
   const router = useRouter();
@@ -155,6 +171,7 @@ export default function DrawerLayout() {
             <Drawer.Screen name="product/[id]" options={{headerShown: false, }} />
             <Drawer.Screen name="search/search" options={{headerShown: false, }} />
             <Drawer.Screen name="profile/settings" options={{headerShown: false, }} />
+            <Drawer.Screen name="profile/(orders)" options={{headerShown: false, }} />
         </Drawer>
     );
 }

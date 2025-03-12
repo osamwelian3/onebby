@@ -25,7 +25,8 @@ const MAPPING = {
   'wallet': 'wallet',
   'location-pin': 'location-pin',
   'help': 'help-outline',
-  'money': 'money'
+  'money': 'money',
+  'remove': 'remove'
 } as Partial<
   Record<
     import('expo-symbols').SymbolViewProps['name'],

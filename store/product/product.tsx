@@ -1,7 +1,7 @@
 import { GroupedProducts } from "@/utils/util";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { Alert } from "react-native";
+import { Alert, ToastAndroid } from "react-native";
 
 export interface Product {
     id: Number,
@@ -52,13 +52,17 @@ export const fetchProduct = createAsyncThunk(
 export interface ProductState {
     loading: boolean,
     products: Product[],
-    groupedProducts: GroupedProducts[]
+    groupedProducts: GroupedProducts[],
+    wishlist: Product[],
+    history: Product[]
 }
 
 const initialState: ProductState = {
   loading: false,
   products: new Array<Product>(),
-  groupedProducts: new Array<GroupedProducts>()
+  groupedProducts: new Array<GroupedProducts>(),
+  wishlist: new Array<Product>(),
+  history: new Array<Product>()
 };
 
 export const productSlice = createSlice({
@@ -67,6 +71,20 @@ export const productSlice = createSlice({
   reducers: {
     setAppGroupedProducts: (state, action: {payload: GroupedProducts[], type: string}) => {
         state.groupedProducts = action.payload
+    },
+    addToWishlist: (state, action: {payload: Product, type: string}) => {
+        state.wishlist = [...state.wishlist.filter((item) => item.id !== action.payload.id), action.payload]
+        ToastAndroid.show('Added to Wishlist', ToastAndroid.SHORT);
+    },
+    removeFromWishlist: (state, action: {payload: Product, type: string}) => {
+        state.wishlist = state.wishlist.filter((item) => item.id !== action.payload.id)
+        ToastAndroid.show('Removed from Wishlist', ToastAndroid.SHORT);
+    },
+    addToHistory: (state, action: {payload: Product, type: string}) => {    
+        state.history = [action.payload, ...state.history.filter((item) => item.id !== action.payload.id)]
+    },
+    removeFromHistory: (state, action: {payload: Product, type: string}) => {
+        state.history = state.history.filter((item) => item.id !== action.payload.id)
     }
   },
   extraReducers(builder) {
@@ -86,5 +104,5 @@ export const productSlice = createSlice({
   },
 });
 
-export const { setAppGroupedProducts } = productSlice.actions;
+export const { setAppGroupedProducts, addToWishlist, removeFromWishlist, addToHistory, removeFromHistory } = productSlice.actions;
 export default productSlice.reducer;

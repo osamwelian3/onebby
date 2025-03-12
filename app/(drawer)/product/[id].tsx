@@ -1,6 +1,6 @@
 import { Dimensions, StatusBar, StyleSheet, ToastAndroid, TouchableOpacity, useColorScheme, View } from 'react-native'
-import React, { useCallback } from 'react'
-import { Product } from '@/store/product/product'
+import React, { useCallback, useEffect } from 'react'
+import { addToHistory, Product } from '@/store/product/product'
 import { ThemedView } from '@/components/ThemedView'
 import { ThemedText } from '@/components/ThemedText'
 import { router, useLocalSearchParams, useRouter } from 'expo-router'
@@ -29,6 +29,10 @@ const ProductDetails = ({product: prod}: {product: Product}) => {
     const cartCount = useAppSelector((state) => state.cart.cartItems.find((it) => it.product.id === product.id)?.count) || 0;
     // const cartCount = carts && carts.length < 1 ? 0 : carts.find((it) => it.id === product.id)?.count || 0;
     const colorScheme = useColorScheme()
+
+    useEffect(() => {
+        dispatch(addToHistory(product))
+    }, [product])
 
     const onPressPagination = (index: number) => {
         ref.current?.scrollTo({

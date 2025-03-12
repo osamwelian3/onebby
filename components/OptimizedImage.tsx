@@ -100,11 +100,17 @@ const OptimizedImage = memo(({ productId, imageId, style }: { productId: Number,
   return (
     <View>
       {loading ? (
-        <ActivityIndicator size="small" color="#641691" />
+        // <ActivityIndicator size="small" color="#641691" />
+        <Image
+          source={require('@/assets/images/onebby_logo.jpg')}
+          resizeMode='contain'
+          style={style ? style : { width: width / 3, height: width / 3, borderRadius: 10 }}
+        />
       ) : (
         imgUri ? (
           <Image
-            source={{ uri: imgUri, cache: 'force-cache' }}
+            source={{ uri: imgUri, cache: 'force-cache', }}
+            loadingIndicatorSource={require('@/assets/images/onebby_logo.jpg')}
             resizeMode='contain'
             style={style ? style : { width: width / 3, height: width / 3, borderRadius: 10 }}
           />
